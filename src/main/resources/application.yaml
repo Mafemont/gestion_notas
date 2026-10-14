@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: Gestion_notas
+
+    datasource:
+      url: jdbc:sqlserver://localhost:1433;databaseName=GestionAcademica;encrypt=true;trustServerCertificate=true
+      username: mafemontoya
+      password: Clave123!
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+    jpa:
+      hibernate:
+        ddl-auto: validate
+      show-sql: true
+
+    properties:
+      jpa:
+        hibernate:
+          format_sql: true
