@@ -1,6 +1,9 @@
 package com.example.gestion_notas.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "CURSO")
@@ -9,31 +12,31 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_curso")
-    private Integer id;
+    private Long cursoId;
 
     @Column(name = "nombre", nullable = false, length = 80)
+    @NotBlank
+    @Size(max = 80)
     private String nombre;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_docente", nullable = false)
+    @NotNull
     private Docente docente;
 
     public Curso() {
     }
 
-    public Curso(Integer id, String nombre, Docente docente) {
-        this.id = id;
+    public Curso(String nombre, Docente docente) {
         this.nombre = nombre;
         this.docente = docente;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getId() {
+        return cursoId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setCursoId(Long cursoId) {this.cursoId = cursoId}
 
     public String getNombre() {
         return nombre;
@@ -54,9 +57,13 @@ public class Curso {
     @Override
     public String toString() {
         return "Curso{" +
-                "id=" + id +
+                "cursoId=" + cursoId +
                 ", nombre='" + nombre + '\'' +
-                ", docente=" + docente +
+                ", docente=" + (docente != null ? docente.getDocenteId() : null) +
                 '}';
+    }
+
+    public long getCursoId() {
+        return false;
     }
 }

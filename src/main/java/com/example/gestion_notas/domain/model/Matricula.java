@@ -1,6 +1,9 @@
 package com.example.gestion_notas.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDate;
 
 @Entity
@@ -10,41 +13,43 @@ public class Matricula {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_matricula")
-    private Integer id;
+    private Long matriculaId;
 
     @Column(name = "fecha_matricula", nullable = false)
+    @NotNull
     private LocalDate fechaMatricula;
 
     @Column(name = "numero_salon", nullable = false)
+    @NotNull
+    @Positive
     private Integer numeroSalon;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_estudiante", nullable = false)
+    @NotNull
     private Estudiante estudiante;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_curso", nullable = false)
+    @NotNull
     private Curso curso;
 
     public Matricula() {
     }
 
-    public Matricula(Integer id, LocalDate fechaMatricula, Integer numeroSalon,
+    public Matricula(LocalDate fechaMatricula, Integer numeroSalon,
                      Estudiante estudiante, Curso curso) {
-        this.id = id;
         this.fechaMatricula = fechaMatricula;
         this.numeroSalon = numeroSalon;
         this.estudiante = estudiante;
         this.curso = curso;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getMatriculaId() {
+        return matriculaId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setMatriculaId(Long matriculaId) {this.matriculaId = matriculaId;}
 
     public LocalDate getFechaMatricula() {
         return fechaMatricula;
@@ -81,10 +86,10 @@ public class Matricula {
     @Override
     public String toString() {
         return "Matricula{" +
-                "id=" + id +
+                "matriculaId=" + matriculaId +
                 ", fechaMatricula=" + fechaMatricula +
                 ", numeroSalon=" + numeroSalon +
-                ", estudiante=" + (estudiante != null ? estudiante.getId() : null) +
+                ", estudiante=" + (estudiante != null ? estudiante.getEstudianteId() : null) +
                 ", curso=" + (curso != null ? curso.getId() : null) +
                 '}';
     }

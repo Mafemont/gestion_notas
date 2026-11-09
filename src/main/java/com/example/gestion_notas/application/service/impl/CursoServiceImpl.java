@@ -2,8 +2,12 @@ package com.example.gestion_notas.application.service.impl;
 
 import com.example.gestion_notas.application.service.CursoService;
 import com.example.gestion_notas.domain.model.Curso;
+import com.example.gestion_notas.domain.model.Estudiante;
+import com.example.gestion_notas.excepciones.*;
 import com.example.gestion_notas.infraestructura.repositorio.CursoRepository;
+import com.example.gestion_notas.infraestructura.repositorio.DocenteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,27 +22,60 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
-    public void save(Curso curso) {
-        cursoRepository.save(curso);
-    }
-
-    @Override
     public List<Curso> findAll() {
         return cursoRepository.findAll();
     }
 
     @Override
-    public Optional<Curso> findById(Integer id) {
-        return cursoRepository.findById(id);
+    public Optional findByCursoId(Long id) {
+        Optional<Curso> curso = cursoRepository.findByCursoId(id);
+        if (curso !=null){
+            return curso;
+        }
+        return null;
     }
 
     @Override
-    public void delete(Integer id) {
-        cursoRepository.deleteById(id);
+    @Transactional
+    public Curso save (Curso curso){
+        if (curso==null){
+            throw new CursoNullExcepcion("Los datos del Curso son Obligatorios");
+        }
+        if (curso.getCursoId() === null){
+            throw new CursoInvalidoExcepcion("El Curso no puede tener campos nulos");
+        }
+        return cursoRepository.save(curso);
     }
 
     @Override
-    public void update(Curso curso) {
-        cursoRepository.save(curso);
+    @Transactional
+    public void deleteByCursoId(Curso curso){
+        if (curso==null){
+            throw new CursoNullExcepcion("Los datos del Curso son obligatorios");
+        }
+        Curso cursoEncontrado = cursoRepository.findByCursoId(curso.getCursoId()).orElse(null);
+        if (cursoEncontrado == null){
+            throw new CursoEncontradoExcepcion("El Curso no se encontro");
+        }
+        cursoRepository.deleteByCursoId(curso.getCursoId());
+    }
+
+    @Override
+    @Transactional
+    public Curso update(Curso curso) {
+        if(curso!=null){
+            return cursoRepository.save(curso);
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Curso patch(Curso curso, Long cursoId) {
+        Optional<Curso> updatedCurso = cursoRepository.findByCursoId(cursoId);
+        if(curso!=null){
+            return cursoRepository.save(updatedCurso);
+        }
+        return null;
     }
 }

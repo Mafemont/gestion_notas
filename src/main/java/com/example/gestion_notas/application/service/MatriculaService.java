@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MatriculaService {
-    void save(Matricula matricula);
+    Matricula save(Matricula matricula);
     List<Matricula> findAll();
-    Optional<Matricula> findById(Integer id);
-    void delete(Integer id);
-    void update(Matricula matricula);
+    Optional findByMatriculaId(Long matriculaId);
+    void deleteByMatriculaId(Matricula matricula);
+    Matricula update(Matricula matricula);
+    Matricula patch(Matricula matricula, Long matriculaId);
 
 }

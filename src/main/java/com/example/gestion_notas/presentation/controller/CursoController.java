@@ -2,6 +2,11 @@ package com.example.gestion_notas.presentation.controller;
 
 import com.example.gestion_notas.application.service.CursoService;
 import com.example.gestion_notas.domain.model.Curso;
+import com.example.gestion_notas.domain.model.Estudiante;
+import com.example.gestion_notas.excepciones.CursoNoEncontradoExcepcion;
+import com.example.gestion_notas.excepciones.CursoNullExcepcion;
+import com.example.gestion_notas.excepciones.EstudianteNoEncontradoExcepcion;
+import com.example.gestion_notas.excepciones.EstudianteNullExcepcion;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,23 +27,36 @@ public class CursoController {
         return cursoService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Curso> findById(@PathVariable Integer id) {
-        return cursoService.findById(id);
+    @GetMapping("/{cursoId}")
+    public Optional findByCursoId(@PathVariable Long id) {
+        return cursoService.findByCursoId(id);
     }
 
     @PostMapping
     public void save(@RequestBody Curso curso) {
-        cursoService.save(curso);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-        cursoService.delete(id);
+        return cursoService.save(curso);
     }
 
     @PutMapping
     public void update(@RequestBody Curso curso) {
-        cursoService.update(curso);
+        return cursoService.update(curso);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long cursoId) {
+        try {
+            CursoService.deleteByCursoId(Long cursoId);
+        }catch (CursoNullExcepcion excepcion){
+            System.out.println(excepcion.getMessage());
+        }catch (CursoNoEncontradoExcepcion exception){
+            System.out.println(exception.getMessage());
+        }
+
+    @PatchMapping("/{cursoId}");
+    public Curso partialUpdate(@PathVariable Long cursoId, @RequestBody Curso){
+    return cursoService.patch(Curso, cursoId);
+        }
+    }
+
+
 }

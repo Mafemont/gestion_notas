@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CursoService {
-    void save(Curso curso);
+
+    Curso save(Curso curso);
     List<Curso> findAll();
-    Optional<Curso> findById(Integer id);
-    void delete(Integer id);
-    void update(Curso curso);
+    Optional findByCursoId(Long cursoId);
+    void deleteByCursoId(Curso curso);
+    Curso update(Curso curso);
+    Curso patch(Curso curso, Long cursoId);
 
 }

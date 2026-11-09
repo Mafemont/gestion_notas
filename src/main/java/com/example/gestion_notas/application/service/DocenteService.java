@@ -8,10 +8,11 @@ import java.util.Optional;
 
 public interface DocenteService {
 
-    void save(Docente docente);
+    Docente save(Docente docente);
     List<Docente> findAll();
-    Optional<Docente> findById(Integer id);
-    void delete(Integer id);
-    void update(Docente docente);
+    Optional findByDocenteId (Long docenteId);
+    void deleteByDocenteId (Docente docente);
+    Docente update(Docente docente);
+    Docente patch(Docente docente, Long docenteId);
 
 }

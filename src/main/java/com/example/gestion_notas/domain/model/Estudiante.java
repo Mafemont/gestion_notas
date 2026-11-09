@@ -1,6 +1,10 @@
 package com.example.gestion_notas.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ESTUDIANTE")
@@ -8,55 +12,40 @@ public class Estudiante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_estudiante")
-    private Integer id;
+    @Column(name = "ID", nullable = false)
+    private Long estudianteId;
 
-    @Column(name = "primer_apellido", nullable = false, length = 60)
-    private String primerApellido;
-
-    @Column(name = "segundo_apellido", length = 60)
-    private String segundoApellido;
-
-    @Column(name = "nombre", nullable = false, length = 60)
+    @Column(name = "nombre", nullable = false, length = 100)
+    @NotNull
+    @Size(max=100)
+    @NotEmpty
     private String nombre;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "correo", nullable = false, length = 100)
+    @NotNull
+    @Size(max=100)
+    @NotEmpty
+    @Email
     private String email;
+
+    @Column(name = "activo", nullable = false)
+    @NotNull
+    private EstatusEstudiante activo;
 
     public Estudiante() {
     }
 
-    public Estudiante(Integer id, String primerApellido, String segundoApellido, String nombre, String email) {
-        this.id = id;
-        this.primerApellido = primerApellido;
-        this.segundoApellido = segundoApellido;
+    public Estudiante(String nombre, String email) {
         this.nombre = nombre;
         this.email = email;
+        this.activo = EstatusEstudiante.ACTIVO;
     }
 
-    public String getPrimerApellido() {
-        return primerApellido;
+    public Long getEstudianteId() {
+        return estudianteId;
     }
 
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
-    }
+    public void setEstudianteId(Long estudianteId) {this.estudianteId = estudianteId}
 
     public String getNombre() {
         return nombre;
@@ -66,22 +55,27 @@ public class Estudiante {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email;}
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public EstatusEstudiante getActivo() {
+        return activo;
+    }
+
+    public void setActivo(EstatusEstudiante activo) {
+        this.activo = activo;
+    }
+
     @Override
     public String toString() {
         return "Estudiante{" +
-                "id=" + id +
-                ", primerApellido='" + primerApellido + '\'' +
-                ", segundoApellido='" + segundoApellido + '\'' +
+                "estudianteId=" + estudianteId +
                 ", nombre='" + nombre + '\'' +
                 ", email='" + email + '\'' +
+                ", email=" + activo +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package com.example.gestion_notas.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "DOCENTES")
@@ -9,34 +11,36 @@ public class Docente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_docente")
-    private Integer id;
+    private Long docenteId;
 
     @Column(name = "primer_apellido", nullable = false, length = 60)
+    @NotBlank
+    @Size(max=60)
     private String primerApellido;
 
     @Column(name = "segundo_apellido", length = 60)
+    @Size(max=60)
     private String segundoApellido;
 
     @Column(name = "nombre", nullable = false, length = 60)
+    @NotBlank
+    @Size(max=60)
     private String nombre;
 
     public Docente() {
     }
 
-    public Docente(Integer id, String primerApellido, String segundoApellido, String nombre) {
-        this.id = id;
+    public Docente(String primerApellido, String segundoApellido, String nombre) {
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getDocenteId() {
+        return docenteId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setDocenteId(Long docenteId) {this.docenteId = docenteId}
 
     public String getPrimerApellido() {
         return primerApellido;
@@ -65,7 +69,7 @@ public class Docente {
     @Override
     public String toString() {
         return "Docente{" +
-                "id=" + id +
+                "docenteId=" + docenteId +
                 ", primerApellido='" + primerApellido + '\'' +
                 ", segundoApellido='" + segundoApellido + '\'' +
                 ", nombre='" + nombre + '\'' +
